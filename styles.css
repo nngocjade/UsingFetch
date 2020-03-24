@@ -11,30 +11,71 @@ body {
     padding: 0;
 }
 
+
+/* ===============================================
+        Header Styles
+===============================================*/
 header {
-    height: 100px;
+    height: 75px;
     width: 100vw;
-    background-color: teal;
+    background-color: #ededed;
+}
+/* === Left side of the header ===*/
+#header-sidebar{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-right: 1px solid grey;
+}
+
+#header-sidebar-icons{
+    height: 100%;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-sidebar-icons ul {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+#header-sidebar-icons ul li{
+    list-style-type: none;
+}
+
+#header-sidebar-icons button {
+    border: none;
+    background-color: inherit;
+}
+
+#header-main{
+    width: 60%;
+    height: 100%;
 }
 
 .main-content {
     width: 100vw;
-    height: calc(100vh - 100px);
-    background-color: violet;
+    height: calc(100vh - 75px);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
-/* 
-*
-*  Styles for the sidebar section below
-*/
+/* ===============================================
+    Styles for the sidebar section below
+===============================================*/
+
 .sidebar {
     width: 40%;
     height: 100%;
-    background-color: yellowgreen;
 }
 
 /* This is the wrap around the message previews */
@@ -103,36 +144,67 @@ header {
     justify-content: flex-start;
 }
 
+/* ===============================================
+        Main Chat Styling Section
+===============================================*/
 
-
-/*
-*
-*
-*  Main Chat Styling Section
-*/
 .main-chat {
     width: 60%;
     height: 100%;
-    background-color: wheat;
+    background-color: rgb(229, 221, 213, 0.9);
+    display: inline-block;
+    overflow-y: auto;
+    position: relative;
+}
+
+.main-chat:after {
+    content: "";
+    background: url('https://web.whatsapp.com/img/bg-chat-tile_9e8a2898faedb7db9bf5638405cf81ae.png');
+    position: absolute;
+    opacity: 0.5;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
 }
 
 /* Wrapper Around the main chat */
 .chat-container {
     height: calc(100% - 100px);
-    width: 100%;
-    background-color: rgba(0, 0, 0, .5);
+    width: calc(100% - 40px);
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-start;
     align-items: flex-start;
+    padding: 0 20px;
 }
 
 .chat-bubble {
-    background-color: white;
-    padding: 4px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    max-width: 60%;
+     padding: 6px 7px 8px 9px;
+     border-radius: 10px;
+     max-width: 75%;
+     position: relative;
+     font-size: .95em;
+     background-color: #ffffff;
+}
+
+.chat-bubble:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #dcf8c6;
+    margin-left: -10px;
+    margin-bottom: -20px;
+}
+
+.chat-bubble.in:before {
+    border-top-color: #ffffff;
+    left: 0;
 }
 
 .chat-bubble.out {
@@ -140,8 +212,24 @@ header {
     align-self: flex-end;
 }
 
+/* Section where new texts are inserted */
 .message-box {
     width: 100%;
     height: 100px;
-    background-color: black;
+    background-color: #ededed;
+}
+.message-box .form-wrap {
+    width: 400px;
+    height: 90%;
+    border-radius: 20px;
+    background-color: white;
+}
+.message-box .form-wrap form{
+    width: 100%;
+    height: 100%;
+}
+input[name="message"]{
+    width: 100%;
+    height: 100%;
+    border: none;
 }
