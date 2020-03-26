@@ -1,30 +1,24 @@
 
-const createChatBubble = (anotherClass) => {
+const createChatBubble = (msg) => {
+
     let chatBubble = document.createElement('div');
-    chatBubble.classList.add("chat-bubble", anotherClass);
+
+    chatBubble.classList.add("chat-bubble", "out");
 
     let paragraph = document.createElement('p');
-    paragraph.innerText = "This is a Javascript created Paragraph";
+    paragraph.innerText = msg;
 
     chatBubble.appendChild(paragraph);
 
     let wrapper = document.getElementById('chat-bubble-wrapper');
-    wrapper.appendChild(chatBubble)
+    wrapper.appendChild(chatBubble);
 }
 
-// This loop will create 10 chat bubbles, with alternating out and in class added to the bubble
-for(let idx = 0; idx < 10; idx++){
+/// Create an event listener for when the form is submitted
+// then, save the user input
+// then, call (invoke) the createChatBubble function
+// pass the user input to the chatbubble creation
 
-    if( idx % 2 === 0 ){
-
-        createChatBubble('out');
-
-    } else {
-
-        createChatBubble('in');
-
-    }
-}
 
 /*
  *
