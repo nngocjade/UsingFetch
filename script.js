@@ -1,3 +1,4 @@
+getUserChats();
 
 const createChatBubble = (msg) => {
 
@@ -14,87 +15,101 @@ const createChatBubble = (msg) => {
     wrapper.appendChild(chatBubble);
 }
 
-/// Create an event listener for when the form is submitted
-// then, save the user input
-// then, call (invoke) the createChatBubble function
-// pass the user input to the chatbubble creation
+
+let newMessageForm = document.getElementById('send-message')
+
+newMessageForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    let msg = document.getElementById('new-message').value;
+    createChatBubble(msg);
+    document.getElementById('new-message').value = "";
+});
 
 
-/*
- *
- *
- * Start of task here:
- * - you will be creating this block of HTML with the following function createPreviewBox:
- * 
- *      <div class="message-preview-box">
- *          <div class="img-wrap">
- *              <img src="./images/sirBarksAlot.jpeg" alt="A cute puppy icon">
- *          </div>
- *          <div class="message-text-wrap">
- *              <p>Bark Wharlberg</p>
- *              <p>I'm baby pok pok forage kinfolk taxidermy actually cornhole</p>
- *          </div>
- *          <div class="date-wrap">
- *              <p>3/12/20</p>
- *          </div>
- *      </div>
- * 
- *  - Using the comments as a guide, create this chunk of code with JavaScript and add it to the DOM
- */
+function getUserChats() {
 
- function createPreviewBox() {
+    fetch('http://demo.codingnomads.co:8080/muttsapp/users/3/chats')
+        .then(res => res.json())
+        .then( dataObj => createPreviewBoxes(dataObj))
+};
 
-    //Create a div element and assign it to a variable called previewBox
+
+
+function createPreviewBoxes(dataObj){
+    let chatsArr = dataObj.data;
+    chatsArr.forEach(chat => createPreviewBox(chat))
+}
+
+
+ function createPreviewBox(chat) {
+    //Make Wrapper Div
     let previewBox = document.createElement('div');
-    // add a class of "message-preview-box" to the previewBox element you jsut created
-    previewBox.classList.add('message-preview-box')
+    previewBox.classList.add('message-preview-box');
+    previewBox.setAttribute('data-chat_id', chat.sender_id)
+    previewBox.addEventListener('click', previewBoxClick)
 
-    // Create a div element and assign it to a variable called imageWrap
+    let imageWrap = document.createElement('div');
+    imageWrap.setAttribute('data-chat_id', chat.sender_id)
+    imageWrap.classList.add('img-wrap');
+    let image = document.createElement('img');
+    image.setAttribute('data-chat_id', chat.sender_id)
+    image.setAttribute('src', chat.photo_url)
+    image.setAttribute('alt', 'default icon')
+    imageWrap.appendChild(image)
+    previewBox.appendChild(imageWrap)
 
-    // add a class of "img-wrap" to the imageWrap element you just created
+    let textWrap = document.createElement('div')
+    textWrap.setAttribute('data-chat_id', chat.sender_id)
+    textWrap.classList.add("message-text-wrap")
+    let p1 = document.createElement('p')
+    p1.setAttribute('data-chat_id', chat.sender_id)
+    p1.innerHTML = chat.chat_name;
+    let p2 = document.createElement('p');
+    p2.setAttribute('data-chat_id', chat.sender_id)
+    p2.innerHTML = chat.last_message
+    textWrap.appendChild(p1)
+    textWrap.appendChild(p2)
+    previewBox.appendChild(textWrap)
 
-    // Create an img element and assign it to a variable called image
+    let dateWrap = document.createElement("div");
+    dateWrap.setAttribute('data-chat_id', chat.sender_id);
+    dateWrap.classList.add("date-wrap");
+    let dateP = document.createElement('p')
+    dateP.setAttribute('data-chat_id', chat.sender_id)
+    dateP.innerHTML = new Date(chat.date_sent).toLocaleDateString();
+    dateWrap.appendChild(dateP)
+    previewBox.appendChild(dateWrap)
 
-    // add a src attribute and alt attribute to the image element you just created (hint: google for reference the JS method 'setAttribute')
-
-    // append the image to the imageWrap
-
-    // append the imageWrap to the previewBox
-
-    // Create a div element and assign it to a variable called textWrap
-
-    // add a class of "message-text-wrap" to the textWrap element you just created
-
-    // Create a paragraph element and assign it to a variable called p1
-
-    // set the innerHTML of p1 equal to the name "Mcgruff the Crime Dog"
-
-    // Create a second paragraph element and assign it to a variable called p2
-
-    // set the innerHTML of p2 equal to the message "Take a Bite Out of Crime"
-
-    // append p1 to the textWrap
-
-    // append p2 to the textWrap
-
-    // append the textWrap to the previewBox
-
-    // Create a div element and assign it to a variable called dateWrap
-
-    // add a class of "date-wrap" to the dateWrap element you just created
-
-    // Create a paragraph element and assign it to a variable called dateP
-
-    // set the innerHTML of dateP equal to the name "3/25/20"
-
-    // append dateP to the dateWrap
-
-    // append the dateWrap to the previewBox
-
-    // Select the div with the id of "message-wrapper" (already on the HTML page) and assign that to a new variable named "messageWrap".
-
-    // append the previewBox element to the messageWrap
-
+    let messageWrap = document.getElementById("message-wrapper")
+    messageWrap.appendChild(previewBox)
  }
 
- //Invoke the createPreviewBox function to see it work!
+ function previewBoxClick(event){
+    // console.log(event.target.dataset.chat_id)
+    let chatID = event.target.dataset.chat_id;
+    fetch('http://demo.codingnomads.co:8080/muttsapp/users/3/chats/' + chatID)
+        .then(res => res.json())
+        .then(dataObj => console.log(dataObj))
+
+ }
+ 
+
+
+ function newUser() {
+     let postData = {
+         "first_name": "Amber",
+         "last_name": "Vauthier",
+         "username": "amberV",
+         "photo_url": ""
+     }
+     let postParams = {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify(postData)
+     }
+     fetch('http://demo.codingnomads.co:8080/muttsapp/users/', postParams)
+         .then(res => res.json())
+         .then(res => console.log(res))
+ };
